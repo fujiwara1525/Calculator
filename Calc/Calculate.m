@@ -69,7 +69,7 @@
         return valueString;
     }
 
-    // .が末尾にある
+    // .が末尾にある // FIXME: 小数点以下に0が入力できないバグ
     if([valueString hasSuffix:@"."] == TRUE){
         _currentValue = [numberFormatFormal numberFromString:[valueString stringByAppendingFormat:@"%@",number]];
     }else{
