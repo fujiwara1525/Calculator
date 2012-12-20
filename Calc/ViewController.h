@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController{
+    __weak IBOutlet UILabel *numberDisplay;
+}
+
+- (IBAction)pushNumberButton:(id)sender;
+- (IBAction)pushClearButton:(id)sender;
+- (IBAction)pushPlusMinusButton:(id)sender;
+- (IBAction)pushCalcSymbolButton:(id)sender;
+- (IBAction)pushDotButton:(id)sender;
 
 @end

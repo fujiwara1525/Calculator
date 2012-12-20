@@ -23,6 +23,7 @@
 		2AE008151632993F00FDB7A0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AE007F01632993E00FDB7A0 /* Foundation.framework */; };
 		2AE0081D1632993F00FDB7A0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2AE0081B1632993F00FDB7A0 /* InfoPlist.strings */; };
 		2AE008201632993F00FDB7A0 /* CalcTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE0081F1632993F00FDB7A0 /* CalcTests.m */; };
+		2AE25BFE1654AC17008F832A /* Calculate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE25BFD1654AC17008F832A /* Calculate.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,8 @@
 		2AE0081C1632993F00FDB7A0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		2AE0081E1632993F00FDB7A0 /* CalcTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CalcTests.h; sourceTree = "<group>"; };
 		2AE0081F1632993F00FDB7A0 /* CalcTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CalcTests.m; sourceTree = "<group>"; };
+		2AE25BFC1654AC17008F832A /* Calculate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Calculate.h; sourceTree = "<group>"; };
+		2AE25BFD1654AC17008F832A /* Calculate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Calculate.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +125,8 @@
 				2AE008061632993F00FDB7A0 /* MainStoryboard.storyboard */,
 				2AE008091632993F00FDB7A0 /* ViewController.h */,
 				2AE0080A1632993F00FDB7A0 /* ViewController.m */,
+				2AE25BFC1654AC17008F832A /* Calculate.h */,
+				2AE25BFD1654AC17008F832A /* Calculate.m */,
 				2AE007F51632993E00FDB7A0 /* Supporting Files */,
 			);
 			path = Calc;
@@ -273,6 +278,7 @@
 				2AE007FB1632993E00FDB7A0 /* main.m in Sources */,
 				2AE007FF1632993E00FDB7A0 /* AppDelegate.m in Sources */,
 				2AE0080B1632993F00FDB7A0 /* ViewController.m in Sources */,
+				2AE25BFE1654AC17008F832A /* Calculate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -344,7 +350,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -365,7 +371,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -378,6 +384,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Calc/Calc-Prefix.pch";
 				INFOPLIST_FILE = "Calc/Calc-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -389,6 +396,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Calc/Calc-Prefix.pch";
 				INFOPLIST_FILE = "Calc/Calc-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -447,6 +455,7 @@
 				2AE008251632993F00FDB7A0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		2AE008261632993F00FDB7A0 /* Build configuration list for PBXNativeTarget "CalcTests" */ = {
 			isa = XCConfigurationList;
@@ -455,6 +464,7 @@
 				2AE008281632993F00FDB7A0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
