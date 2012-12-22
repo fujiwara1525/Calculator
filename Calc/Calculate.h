@@ -15,7 +15,7 @@
 @property (nonatomic, retain) NSNumber* currentValue;
 @property (nonatomic, retain) NSNumber* previousValue;
 
-- (NSString *)clearAll:(NSString *)valueString;
+- (NSString *)clearAll;
 
 - (NSString *)addNumber:(NSNumber *)number ToString:(NSString *)valueString;
 - (NSString *)addDecimalPointToString:(NSString *)valueString;

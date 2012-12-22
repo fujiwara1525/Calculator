@@ -29,7 +29,7 @@
 }
 
 - (IBAction)pushClearButton:(id)sender {
-    numberDisplay.text = [calculate clearAll:numberDisplay.text];
+    numberDisplay.text = [calculate clearAll];
 }
 
 - (IBAction)pushPlusMinusButton:(id)sender {

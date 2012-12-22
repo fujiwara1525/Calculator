@@ -21,25 +21,24 @@
     state = Normal;
     _currentValue = @0;
 
+    // 3桁区切りあり
     numberFormatFormal = [[NSNumberFormatter alloc] init];
     [numberFormatFormal setNumberStyle:NSNumberFormatterDecimalStyle];
     [numberFormatFormal setGroupingSeparator:@","];
     [numberFormatFormal setGroupingSize:3];
     [numberFormatFormal setMaximumFractionDigits:MAX_DIGIT];
 
-    numberFormatNatural = [[NSNumberFormatter alloc] init];
-    [numberFormatNatural setNumberStyle:NSNumberFormatterDecimalStyle];
+    // 3桁区切りなし
+    numberFormatNatural = [numberFormatFormal copy];
     [numberFormatNatural setGroupingSeparator:@""];
-    [numberFormatNatural setMaximumFractionDigits:MAX_DIGIT];
     
     return self;
 }
 
-- (NSString *)clearAll:(NSString *)valueString{
+- (NSString *)clearAll{
     _currentValue = @0;
     _previousValue = @0;
-    valueString = @"0";
-    return valueString;
+    return @"0";
 }
 
 - (NSString *)addNumber:(NSNumber *)number ToString:(NSString *)valueString{
@@ -52,13 +51,6 @@
         _currentValue = number;
         valueString = [numberFormatFormal stringFromNumber:_currentValue];
         state = Normal;
-        return valueString;
-    }
-
-    if([valueString hasSuffix:@"."] == TRUE){
-        _currentValue = [numberFormatFormal numberFromString:
-                         [[numberFormatNatural stringFromNumber:_currentValue] stringByAppendingFormat:@".%@",number]];
-        valueString = [numberFormatFormal stringFromNumber:_currentValue];
         return valueString;
     }
 
@@ -84,7 +76,7 @@
 - (NSString *)addDecimalPointToString:(NSString *)valueString{
     // .が末尾にある
     if([valueString hasSuffix:@"."] == TRUE){
-        valueString = [valueString substringFromIndex:valueString.length - 1];
+        valueString = [valueString substringToIndex:valueString.length - 1];
         return valueString;
     }
     // .が無い
