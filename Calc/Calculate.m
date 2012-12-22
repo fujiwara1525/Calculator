@@ -18,8 +18,7 @@
 }
 
 - (id)init{
-    state = Normal;
-    _currentValue = @0;
+    [self clearAll];
 
     // 3桁区切りあり
     numberFormatFormal = [[NSNumberFormatter alloc] init];
@@ -36,6 +35,7 @@
 }
 
 - (NSString *)clearAll{
+    state = Normal;
     _currentValue = @0;
     _previousValue = @0;
     return @"0";
@@ -55,25 +55,38 @@
     }
 
     // 値が0の時
-    if ([_currentValue isEqualToNumber:@0]) {
+    if ([valueString isEqualToString:@"0"]) {
         _currentValue = number;
         valueString = [numberFormatFormal stringFromNumber:_currentValue];
         return valueString;
     }
 
-    // .が末尾にある // FIXME: 小数点以下に0が入力できないバグ
-    if([valueString hasSuffix:@"."] == TRUE){
-        _currentValue = [numberFormatFormal numberFromString:[valueString stringByAppendingFormat:@"%@",number]];
-    }else{
-        _currentValue = [numberFormatFormal numberFromString:
-                         [[numberFormatNatural stringFromNumber:_currentValue] stringByAppendingFormat:@"%@",number]];
+    // 小数点以下の入力
+    if ([valueString rangeOfString:@"."].location != NSNotFound) {
+        valueString = [valueString stringByAppendingFormat:@"%@",number];
+        _currentValue = [numberFormatFormal numberFromString:valueString];
+        return valueString;
     }
-    
-    valueString = [numberFormatFormal stringFromNumber:_currentValue];
+
+    // 通常時
+    NSString* naturalValueString = [numberFormatNatural stringFromNumber:[numberFormatFormal numberFromString:valueString]];
+
+    if([valueString hasSuffix:@"."] == TRUE)
+        naturalValueString = [naturalValueString stringByAppendingFormat:@".%@",number];
+    else
+        naturalValueString = [naturalValueString stringByAppendingFormat:@"%@",number];
+
+    valueString = [numberFormatFormal stringFromNumber:[numberFormatNatural numberFromString:naturalValueString]];
+    _currentValue = [numberFormatNatural numberFromString:naturalValueString];
     return valueString;
 }
 
 - (NSString *)addDecimalPointToString:(NSString *)valueString{
+    // イコール直後
+    if(state == Equal){
+        return valueString;
+    }
+
     // .が末尾にある
     if([valueString hasSuffix:@"."] == TRUE){
         valueString = [valueString substringToIndex:valueString.length - 1];
@@ -107,13 +120,11 @@
     [self calculateValue];
     state = type;
 
-    valueString = [numberFormatFormal stringFromNumber:_currentValue];
-    if (state == Equal){
-        return valueString;
-    }else{
+    if (state != Equal){
         _previousValue = _currentValue;
         _currentValue = @0;
     }
+    valueString = [numberFormatFormal stringFromNumber:_currentValue];
     return valueString;
 }
 

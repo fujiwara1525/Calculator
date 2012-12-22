@@ -39,6 +39,21 @@
     value = [test addDecimalPointToString:value];
     value = [test addNumber:@5 ToString:value];
     STAssertEqualObjects(value, @"1,000.5", @"Add Dot Failed.");
+
+    // 0.5
+    value = [test clearAll];
+    value = [test addNumber:@0 ToString:value];
+    value = [test addDecimalPointToString:value];
+    value = [test addNumber:@5 ToString:value];
+    STAssertEqualObjects(value, @"0.5", @"Add Dot Failed.");
+
+    // 0.05
+    value = [test clearAll];
+    value = [test addNumber:@0 ToString:value];
+    value = [test addDecimalPointToString:value];
+    value = [test addNumber:@0 ToString:value];
+    value = [test addNumber:@5 ToString:value];
+    STAssertEqualObjects(value, @"0.05", @"Add Dot Failed.");
 }
 
 - (void)testCalculatePlus{
