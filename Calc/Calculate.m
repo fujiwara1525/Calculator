@@ -50,11 +50,7 @@
         state = Normal;
         return [numberFormatterFormal stringFromNumber:number];
     }
-
-    // 値が0の時
-    if ([valueString isEqualToString:@"0"])
-        return [numberFormatterFormal stringFromNumber:number];
-
+    
     // 小数点無し
     if ([valueString rangeOfString:@"."].location == NSNotFound){
         valueString = [valueString stringByReplacingOccurrencesOfString:@"," withString:@""]; // 桁区切り記号の削除
