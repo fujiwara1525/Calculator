@@ -48,23 +48,20 @@
 
     // イコール直後
     if(state == Equal){
-        _currentValue = number;
-        valueString = [numberFormatterFormal stringFromNumber:_currentValue];
+        valueString = [numberFormatterFormal stringFromNumber:number];
         state = Normal;
         return valueString;
     }
 
     // 値が0の時
     if ([valueString isEqualToString:@"0"]) {
-        _currentValue = number;
-        valueString = [numberFormatterFormal stringFromNumber:_currentValue];
+        valueString = [numberFormatterFormal stringFromNumber:number];
         return valueString;
     }
 
     // 小数点以下の入力
     if ([valueString rangeOfString:@"."].location != NSNotFound) {
         valueString = [valueString stringByAppendingFormat:@"%@",number];
-        _currentValue = [numberFormatterFormal numberFromString:valueString];
         return valueString;
     }
 
@@ -88,7 +85,7 @@
         return valueString;
 
     // .が無い
-    if ([[numberFormatterFormal stringFromNumber:_currentValue] rangeOfString:@"."].location == NSNotFound){
+    if ([valueString rangeOfString:@"."].location == NSNotFound){
         valueString = [valueString stringByAppendingString:@"."];
         return valueString;
     }
@@ -106,11 +103,12 @@
     else
         valueString = [@"-" stringByAppendingString:valueString];
 
-    _currentValue = [numberFormatterFormal numberFromString:valueString];
     return valueString;
 }
 
 - (NSString *)calculateValueToString:(NSString *)valueString ForType:(enum State)type{
+    _currentValue = [numberFormatterFormal numberFromString:valueString];
+    
     [self calculateValue];
     state = type;
 

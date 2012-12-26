@@ -60,9 +60,9 @@
     NSString* value = @"0";
 
     // 200 + 200 = 400
-    test.currentValue = @200;
+    value = @"200";
     value = [test calculateValueToString:value ForType:Plus];
-    test.currentValue = @200;
+    value = @"200";
     value = [test calculateValueToString:value ForType:Equal];
     STAssertEqualObjects(value, @"400", @"Plus Failed");
 }
@@ -71,9 +71,9 @@
     NSString* value = @"0";
 
     // 200 - 100 = 100
-    test.currentValue = @200;
+    value = @"200";
     value = [test calculateValueToString:value ForType:Minus];
-    test.currentValue = @100;
+    value = @"100";
     value = [test calculateValueToString:value ForType:Equal];
     STAssertEqualObjects(value, @"100", @"Minus Failed.");
 }
@@ -82,9 +82,9 @@
     NSString* value = @"0";
 
     // 200 * 100 = 20000
-    test.currentValue = @200;
+    value = @"200";
     value = [test calculateValueToString:value ForType:Multiple];
-    test.currentValue = @100;
+    value = @"100";
     value = [test calculateValueToString:value ForType:Equal];
     STAssertEqualObjects(value, @"20,000", @"Multiple Failed.");
 }
@@ -93,16 +93,16 @@
     NSString* value = @"0";
 
     // 200/100 = 2
-    test.currentValue = @200;
+    value = @"200";
     value = [test calculateValueToString:value ForType:Divide];
-    test.currentValue = @100;
+    value = @"100";
     value = [test calculateValueToString:value ForType:Equal];
     STAssertEqualObjects(value, @"2", @"Divide Failed.");
 
     // 200/3 = 66.6666...
-    test.currentValue = @200;
+    value = @"200";
     value = [test calculateValueToString:value ForType:Divide];
-    test.currentValue = @3;
+    value = @"3";
     value = [test calculateValueToString:value ForType:Equal];
 
     NSString *testString = @"66.";
