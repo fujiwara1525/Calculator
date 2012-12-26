@@ -11,8 +11,8 @@
 #define MAX_DIGIT 15 // 最大桁数
 
 @implementation Calculate{
-    NSNumberFormatter *numberFormatFormal;
-    NSNumberFormatter *numberFormatNatural;
+    NSNumberFormatter *numberFormatterFormal;
+    NSNumberFormatter *numberFormatterNatural;
 
     enum State state;
 }
@@ -21,15 +21,15 @@
     [self clearAll];
 
     // 3桁区切りあり
-    numberFormatFormal = [[NSNumberFormatter alloc] init];
-    [numberFormatFormal setNumberStyle:NSNumberFormatterDecimalStyle];
-    [numberFormatFormal setGroupingSeparator:@","];
-    [numberFormatFormal setGroupingSize:3];
-    [numberFormatFormal setMaximumFractionDigits:MAX_DIGIT];
+    numberFormatterFormal = [[NSNumberFormatter alloc] init];
+    [numberFormatterFormal setNumberStyle:NSNumberFormatterDecimalStyle];
+    [numberFormatterFormal setGroupingSeparator:@","];
+    [numberFormatterFormal setGroupingSize:3];
+    [numberFormatterFormal setMaximumFractionDigits:MAX_DIGIT];
 
     // 3桁区切りなし
-    numberFormatNatural = [numberFormatFormal copy];
-    [numberFormatNatural setGroupingSeparator:@""];
+    numberFormatterNatural = [numberFormatterFormal copy];
+    [numberFormatterNatural setGroupingSeparator:@""];
     
     return self;
 }
@@ -49,7 +49,7 @@
     // イコール直後
     if(state == Equal){
         _currentValue = number;
-        valueString = [numberFormatFormal stringFromNumber:_currentValue];
+        valueString = [numberFormatterFormal stringFromNumber:_currentValue];
         state = Normal;
         return valueString;
     }
@@ -57,62 +57,56 @@
     // 値が0の時
     if ([valueString isEqualToString:@"0"]) {
         _currentValue = number;
-        valueString = [numberFormatFormal stringFromNumber:_currentValue];
+        valueString = [numberFormatterFormal stringFromNumber:_currentValue];
         return valueString;
     }
 
     // 小数点以下の入力
     if ([valueString rangeOfString:@"."].location != NSNotFound) {
         valueString = [valueString stringByAppendingFormat:@"%@",number];
-        _currentValue = [numberFormatFormal numberFromString:valueString];
+        _currentValue = [numberFormatterFormal numberFromString:valueString];
         return valueString;
     }
 
     // 通常時
-    NSString* naturalValueString = [numberFormatNatural stringFromNumber:[numberFormatFormal numberFromString:valueString]];
+    NSString* naturalValueString = [numberFormatterNatural stringFromNumber:[numberFormatterFormal numberFromString:valueString]];
 
     if([valueString hasSuffix:@"."] == TRUE)
         naturalValueString = [naturalValueString stringByAppendingFormat:@".%@",number];
     else
         naturalValueString = [naturalValueString stringByAppendingFormat:@"%@",number];
 
-    valueString = [numberFormatFormal stringFromNumber:[numberFormatNatural numberFromString:naturalValueString]];
-    _currentValue = [numberFormatNatural numberFromString:naturalValueString];
+    valueString = [numberFormatterFormal stringFromNumber:[numberFormatterNatural numberFromString:naturalValueString]];
+    _currentValue = [numberFormatterNatural numberFromString:naturalValueString];
+    
     return valueString;
 }
 
 - (NSString *)addDecimalPointToString:(NSString *)valueString{
     // イコール直後
-    if(state == Equal){
+    if(state == Equal)
+        return valueString;
+
+    // .が無い
+    if ([[numberFormatterFormal stringFromNumber:_currentValue] rangeOfString:@"."].location == NSNotFound){
+        valueString = [valueString stringByAppendingString:@"."];
         return valueString;
     }
 
     // .が末尾にある
-    if([valueString hasSuffix:@"."] == TRUE){
+    if([valueString hasSuffix:@"."])
         valueString = [valueString substringToIndex:valueString.length - 1];
-        return valueString;
-    }
-    // .が無い
-    if ([[numberFormatFormal stringFromNumber:_currentValue] rangeOfString:@"."].location == NSNotFound) {
-        valueString = [valueString stringByAppendingString:@"."];
-    }else{ // .がある
-        return valueString;
-    }
+    
     return valueString;
 }
 
 - (NSString *)addPlusMinusToString:(NSString *)valueString{
-    if ([[numberFormatFormal numberFromString:valueString] compare:@0] == NSOrderedDescending){
+    if ([valueString hasPrefix:@"-"])
+        valueString = [valueString substringFromIndex:1];
+    else
         valueString = [@"-" stringByAppendingString:valueString];
-    }else if([[numberFormatFormal numberFromString:valueString] compare:@0] == NSOrderedAscending){
-        valueString = [valueString stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"-"]];
-    }else{
-        if ([valueString isEqualToString:@"0"]) {
-            valueString = @"-0";
-        }else{
-            valueString = @"0";
-        }
-    }
+
+    _currentValue = [numberFormatterFormal numberFromString:valueString];
     return valueString;
 }
 
@@ -124,11 +118,12 @@
         _previousValue = _currentValue;
         _currentValue = @0;
     }
-    valueString = [numberFormatFormal stringFromNumber:_currentValue];
+    valueString = [numberFormatterFormal stringFromNumber:_currentValue];
     return valueString;
 }
 
 - (void)calculateValue{
+    // !!!: 桁数制限を超える場合の数値の扱いをどうにかする
     switch (state) {
         case Plus:
             _currentValue = [NSNumber numberWithDouble:[_previousValue doubleValue] + [_currentValue doubleValue]];
