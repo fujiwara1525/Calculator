@@ -34,11 +34,14 @@
     STAssertEqualObjects(value, @"100", @"Add Number Failed");
     value = [test addNumber:@0 ToString:value];
     STAssertEqualObjects(value, @"1,000", @"Add Number Failed");
+    value = [test addNumber:@0 ToString:value];
+    STAssertEqualObjects(value, @"10,000", @"Add Number Failed");
 
     // 末尾に.ありの場合
     value = [test addDecimalPointToString:value];
+    STAssertEqualObjects(value, @"10,000.", @"Add Dot Failed.");
     value = [test addNumber:@5 ToString:value];
-    STAssertEqualObjects(value, @"1,000.5", @"Add Dot Failed.");
+    STAssertEqualObjects(value, @"10,000.5", @"Add Dot Failed.");
 
     // 0.5
     value = [test clearAll];
@@ -51,7 +54,9 @@
     value = [test clearAll];
     value = [test addNumber:@0 ToString:value];
     value = [test addDecimalPointToString:value];
+    STAssertEqualObjects(value, @"0.", @"Add Dot Failed.");
     value = [test addNumber:@0 ToString:value];
+    STAssertEqualObjects(value, @"0.0", @"Add Dot Failed.");
     value = [test addNumber:@5 ToString:value];
     STAssertEqualObjects(value, @"0.05", @"Add Dot Failed.");
 }

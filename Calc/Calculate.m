@@ -29,8 +29,7 @@
 
     // 3桁区切りなし
     numberFormatterNatural = [numberFormatterFormal copy];
-    [numberFormatterNatural setGroupingSeparator:@""];
-    
+    [numberFormatterNatural setGroupingSize:0];
     return self;
 }
 
@@ -48,35 +47,22 @@
 
     // イコール直後
     if(state == Equal){
-        valueString = [numberFormatterFormal stringFromNumber:number];
         state = Normal;
-        return valueString;
+        return [numberFormatterFormal stringFromNumber:number];
     }
 
     // 値が0の時
-    if ([valueString isEqualToString:@"0"]) {
-        valueString = [numberFormatterFormal stringFromNumber:number];
-        return valueString;
-    }
+    if ([valueString isEqualToString:@"0"])
+        return [numberFormatterFormal stringFromNumber:number];
 
-    // 小数点以下の入力
-    if ([valueString rangeOfString:@"."].location != NSNotFound) {
+    // 小数点無し
+    if ([valueString rangeOfString:@"."].location == NSNotFound){
+        valueString = [valueString stringByReplacingOccurrencesOfString:@"," withString:@""]; // 桁区切り記号の削除
         valueString = [valueString stringByAppendingFormat:@"%@",number];
-        return valueString;
+        return [numberFormatterFormal stringFromNumber:[numberFormatterNatural numberFromString:valueString]]; // 整形
     }
 
-    // 通常時
-    NSString* naturalValueString = [numberFormatterNatural stringFromNumber:[numberFormatterFormal numberFromString:valueString]];
-
-    if([valueString hasSuffix:@"."] == TRUE)
-        naturalValueString = [naturalValueString stringByAppendingFormat:@".%@",number];
-    else
-        naturalValueString = [naturalValueString stringByAppendingFormat:@"%@",number];
-
-    valueString = [numberFormatterFormal stringFromNumber:[numberFormatterNatural numberFromString:naturalValueString]];
-    _currentValue = [numberFormatterNatural numberFromString:naturalValueString];
-    
-    return valueString;
+    return [valueString stringByAppendingFormat:@"%@",number];
 }
 
 - (NSString *)addDecimalPointToString:(NSString *)valueString{
