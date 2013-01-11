@@ -25,7 +25,7 @@
 
 #pragma mark - IBAction
 - (IBAction)pushNumberButton:(id)sender {
-    numberDisplay.text = [calculate addNumber:[[[NSNumberFormatter alloc] init] numberFromString:[sender accessibilityLabel]] ToString:numberDisplay.text];
+    numberDisplay.text = [calculate addNumber:[[[NSNumberFormatter alloc] init] numberFromString:[sender restorationIdentifier]] ToString:numberDisplay.text];
 }
 
 - (IBAction)pushClearButton:(id)sender {
@@ -38,15 +38,15 @@
 
 - (IBAction)pushCalcSymbolButton:(id)sender {
     enum State state;
-    if ([[sender accessibilityLabel] isEqualToString:@"Plus"]) {
+    if ([[sender restorationIdentifier] isEqualToString:@"Plus"]) {
         state = Plus;
-    }else if ([[sender accessibilityLabel] isEqualToString:@"Minus"]){
+    }else if ([[sender restorationIdentifier] isEqualToString:@"Minus"]){
         state = Minus;
-    }else if ([[sender accessibilityLabel] isEqualToString:@"Multiple"]){
+    }else if ([[sender restorationIdentifier] isEqualToString:@"Multiple"]){
         state = Multiple;
-    }else if ([[sender accessibilityLabel] isEqualToString:@"Divide"]){
+    }else if ([[sender restorationIdentifier] isEqualToString:@"Divide"]){
         state = Divide;
-    }else if ([[sender accessibilityLabel] isEqualToString:@"Equal"]){
+    }else if ([[sender restorationIdentifier] isEqualToString:@"Equal"]){
         state = Equal;
     }
     numberDisplay.text = [calculate calculateValueToString:numberDisplay.text ForType:state];
