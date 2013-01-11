@@ -20,14 +20,14 @@
 - (id)init{
     [self clearAll];
 
-    // 3桁区切りあり
+    // 3桁区切りありのNSNumberFormatter(例:1,000)
     numberFormatterFormal = [[NSNumberFormatter alloc] init];
     [numberFormatterFormal setNumberStyle:NSNumberFormatterDecimalStyle];
     [numberFormatterFormal setGroupingSeparator:@","];
     [numberFormatterFormal setGroupingSize:3];
     [numberFormatterFormal setMaximumFractionDigits:MAX_DIGIT];
 
-    // 3桁区切りなし
+    // 3桁区切りなしのNSNumberFormatter(例:1000)
     numberFormatterNatural = [numberFormatterFormal copy];
     [numberFormatterNatural setGroupingSize:0];
     return self;
@@ -89,16 +89,16 @@
 }
 
 - (NSString *)calculateValueToString:(NSString *)valueString ForType:(enum State)type{
-    _currentValue = [numberFormatterFormal numberFromString:valueString];
+    _currentValue = [numberFormatterFormal numberFromString:valueString]; // 現在の値を取得
     
-    [self calculateValue];
-    state = type;
+    [self calculateValue]; // 演算
+    state = type;          // 状態を変更
 
     if (state != Equal){
-        _previousValue = _currentValue;
+        _previousValue = _currentValue; // 現在の値を保存
         _currentValue = @0;
     }
-    valueString = [numberFormatterFormal stringFromNumber:_currentValue];
+    valueString = [numberFormatterFormal stringFromNumber:_currentValue]; // 計算後の値を返す
     return valueString;
 }
 
