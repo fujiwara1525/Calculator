@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface ViewController : UIViewController{
-    __weak IBOutlet UILabel *numberDisplay;
+    __weak IBOutlet UILabel *numberDisplay; // 電卓の表示部
 }
 
 - (IBAction)pushNumberButton:(id)sender;

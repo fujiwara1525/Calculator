@@ -12,8 +12,8 @@
     enum State {Normal,Plus,Minus,Multiple,Divide,Equal};
 }
 
-@property (nonatomic, retain) NSNumber* currentValue;
-@property (nonatomic, retain) NSNumber* previousValue;
+@property (nonatomic, retain) NSNumber* currentValue;  // 現在の値
+@property (nonatomic, retain) NSNumber* previousValue; // 過去の値
 
 - (NSString *)clearAll;
 

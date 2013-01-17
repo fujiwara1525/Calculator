@@ -17,7 +17,7 @@
     enum State state;
 }
 
-- (id)init{
+- (id)init{ // 初期化
     [self clearAll];
 
     // 3桁区切りありのNSNumberFormatter(例:1,000)
@@ -33,62 +33,63 @@
     return self;
 }
 
-- (NSString *)clearAll{
+- (NSString *)clearAll{ // Cボタンの動作
     state = Normal;
     _currentValue = @0;
     _previousValue = @0;
     return @"0";
 }
 
-- (NSString *)addNumber:(NSNumber *)number ToString:(NSString *)valueString{
-    // 桁数制限
+- (NSString *)addNumber:(NSNumber *)number ToString:(NSString *)valueString{ // 与えられた数値（文字列）に数値を追加して返す
+    // 桁数制限 - 何もしない
     if (valueString.length >= MAX_DIGIT)
         return valueString;
 
-    // イコール直後
+    // イコール直後 - 表示されていた値を破棄して新規の計算を開始する
     if(state == Equal){
         state = Normal;
         return [numberFormatterFormal stringFromNumber:number];
     }
     
-    // 小数点無し
+    // 与えられた値に小数点無し - 桁区切り記号を考慮
     if ([valueString rangeOfString:@"."].location == NSNotFound){
         valueString = [valueString stringByReplacingOccurrencesOfString:@"," withString:@""]; // 桁区切り記号の削除
         valueString = [valueString stringByAppendingFormat:@"%@",number];
         return [numberFormatterFormal stringFromNumber:[numberFormatterNatural numberFromString:valueString]]; // 整形
     }
 
-    return [valueString stringByAppendingFormat:@"%@",number];
+    // 与えられた値に小数点有り - 追加するだけ
+    return [valueString stringByAppendingFormat:@"%@",number]; // 末尾に文字を追加
 }
 
-- (NSString *)addDecimalPointToString:(NSString *)valueString{
-    // イコール直後
+- (NSString *)addDecimalPointToString:(NSString *)valueString{ // 与えられた数値（文字列）に小数点を追加して返す
+    // イコール直後 - 何もしない
     if(state == Equal)
         return valueString;
 
-    // .が無い
+    // .が無い - .を追加
     if ([valueString rangeOfString:@"."].location == NSNotFound){
-        valueString = [valueString stringByAppendingString:@"."];
-        return valueString;
+        return [valueString stringByAppendingString:@"."]; // 末尾に.を追加
     }
 
-    // .が末尾にある
+    // .が末尾にある - .を削除
     if([valueString hasSuffix:@"."])
-        valueString = [valueString substringToIndex:valueString.length - 1];
-    
+        return [valueString substringToIndex:valueString.length - 1]; // 末尾から一文字削除
+
+    // .が途中にある - 何もしない
     return valueString;
 }
 
-- (NSString *)addPlusMinusToString:(NSString *)valueString{
-    if ([valueString hasPrefix:@"-"])
-        valueString = [valueString substringFromIndex:1];
+- (NSString *)addPlusMinusToString:(NSString *)valueString{ // ±ボタンの動作
+    if ([valueString hasPrefix:@"-"]) // -がある
+        valueString = [valueString substringFromIndex:1]; // 先頭から一文字削除
     else
-        valueString = [@"-" stringByAppendingString:valueString];
+        valueString = [@"-" stringByAppendingString:valueString]; // 先頭に-を追加
 
     return valueString;
 }
 
-- (NSString *)calculateValueToString:(NSString *)valueString ForType:(enum State)type{
+- (NSString *)calculateValueToString:(NSString *)valueString ForType:(enum State)type{ // 演算と
     _currentValue = [numberFormatterFormal numberFromString:valueString]; // 現在の値を取得
     
     [self calculateValue]; // 演算
@@ -98,13 +99,12 @@
         _previousValue = _currentValue; // 現在の値を保存
         _currentValue = @0;
     }
-    valueString = [numberFormatterFormal stringFromNumber:_currentValue]; // 計算後の値を返す
-    return valueString;
+    return [numberFormatterFormal stringFromNumber:_currentValue]; // 計算後の値を返す
 }
 
-- (void)calculateValue{
+- (void)calculateValue{ // 演算の本体
     // !!!: 桁数制限を超える場合の数値の扱いをどうにかする
-    switch (state) {
+    switch (state) { // 状態に応じた演算を行い_currentValueに格納する
         case Plus:
             _currentValue = [NSNumber numberWithDouble:[_previousValue doubleValue] + [_currentValue doubleValue]];
             break;
