@@ -8,6 +8,7 @@
 
 #import "CalcTests.h"
 #import "../Calc/Calculate.m"
+#import "Calculate.h"
 @implementation CalcTests{
     Calculate *test;
 }
@@ -22,144 +23,103 @@
 }
 
 - (void)testAddNumber{
+    //STFail(@"失敗時に表示されるメッセージ");
     NSString* value = @"0";
-
     value = [test addNumber:@0 ToString:value];
-    STAssertEqualObjects(value, @"0", @"Add Number Failed");
+    STAssertEqualObjects(value, @"0", @"失敗時に表示されるメッセージ");
     value = [test addNumber:@1 ToString:value];
-    STAssertEqualObjects(value, @"1", @"Add Number Failed");
+    STAssertEqualObjects(value, @"1", @"失敗時に表示されるメッセージ");
     value = [test addNumber:@0 ToString:value];
-    STAssertEqualObjects(value, @"10", @"Add Number Failed");
+    STAssertEqualObjects(value, @"10", @"失敗時に表示されるメッセージ");
     value = [test addNumber:@0 ToString:value];
-    STAssertEqualObjects(value, @"100", @"Add Number Failed");
+    STAssertEqualObjects(value, @"100", @"失敗時に表示されるメッセージ");
     value = [test addNumber:@0 ToString:value];
-    STAssertEqualObjects(value, @"1,000", @"Add Number Failed");
-    value = [test addNumber:@0 ToString:value];
-    STAssertEqualObjects(value, @"10,000", @"Add Number Failed");
-
-    // 末尾に.ありの場合
+    STAssertEqualObjects(value, @"1,000", @"失敗時に表示されるメッセージ");
     value = [test addDecimalPointToString:value];
-    STAssertEqualObjects(value, @"10,000.", @"Add Dot Failed.");
-    value = [test addNumber:@5 ToString:value];
-    STAssertEqualObjects(value, @"10,000.5", @"Add Dot Failed.");
-
-    // 0.5
+    STAssertEqualObjects(value, @"1,000.", @"失敗時に表示されるメッセージ");
+    value = [test addNumber:@1 ToString:value];
+    STAssertEqualObjects(value, @"1,000.1", @"失敗時に表示されるメッセージ");
+    value = [test addNumber:@1 ToString:value];
+    STAssertEqualObjects(value, @"1,000.11", @"失敗時に表示されるメッセージ");
+    value = [test addNumber:@1 ToString:value];
+    STAssertEqualObjects(value, @"1,000.111", @"失敗時に表示されるメッセージ");
+    value = [test addNumber:@1 ToString:value];
+    STAssertEqualObjects(value, @"1,000.1111", @"失敗時に表示されるメッセージ");
+    
     value = [test clearAll];
     value = [test addNumber:@0 ToString:value];
+    STAssertEqualObjects(value, @"0", @"失敗時に表示されるメッセージ");
     value = [test addDecimalPointToString:value];
-    value = [test addNumber:@5 ToString:value];
-    STAssertEqualObjects(value, @"0.5", @"Add Dot Failed.");
-
-    // 0.05
-    value = [test clearAll];
-    value = [test addNumber:@0 ToString:value];
+    STAssertEqualObjects(value, @"0.", @"失敗時に表示されるメッセージ");
     value = [test addDecimalPointToString:value];
-    STAssertEqualObjects(value, @"0.", @"Add Dot Failed.");
+    STAssertEqualObjects(value, @"0.", @"失敗時に表示されるメッセージ");
     value = [test addNumber:@0 ToString:value];
-    STAssertEqualObjects(value, @"0.0", @"Add Dot Failed.");
-    value = [test addNumber:@5 ToString:value];
-    STAssertEqualObjects(value, @"0.05", @"Add Dot Failed.");
+    STAssertEqualObjects(value, @"0.0", @"失敗時に表示されるメッセージ");
+    value = [test addNumber:@1 ToString:value];
+    STAssertEqualObjects(value, @"0.01", @"失敗時に表示されるメッセージ");
+    
 }
-
 - (void)testCalculatePlus{
     NSString* value = @"0";
-
-    // 200 + 200 = 400
-    value = @"200";
+    value = @"999";
     value = [test calculateValueToString:value ForType:Plus];
-    value = @"200";
+    value = @"1";
     value = [test calculateValueToString:value ForType:Equal];
-    STAssertEqualObjects(value, @"400", @"Plus Failed");
-}
+    STAssertEqualObjects(value, @"1,000", @"失敗時に表示されるメッセージ");
+    }
 
 - (void)testCalculateMinus{
     NSString* value = @"0";
-
-    // 200 - 100 = 100
-    value = @"200";
+    value = @"1";
     value = [test calculateValueToString:value ForType:Minus];
-    value = @"100";
+    value = @"0.01";
     value = [test calculateValueToString:value ForType:Equal];
-    STAssertEqualObjects(value, @"100", @"Minus Failed.");
+    STAssertEqualObjects(value, @"0.99", @"失敗時に表示されるメッセージ");
 }
 
 - (void)testCalculateMultiple{
     NSString* value = @"0";
-
-    // 200 * 100 = 20000
-    value = @"200";
+    value = @"1.5";
     value = [test calculateValueToString:value ForType:Multiple];
-    value = @"100";
+    value = @"1.5";
     value = [test calculateValueToString:value ForType:Equal];
-    STAssertEqualObjects(value, @"20,000", @"Multiple Failed.");
+    STAssertEqualObjects(value, @"2.25", @"失敗時に表示されるメッセージ");
 }
 
 - (void)testCalculateDivide{
     NSString* value = @"0";
-
-    // 200/100 = 2
-    value = @"200";
-    value = [test calculateValueToString:value ForType:Divide];
-    value = @"100";
-    value = [test calculateValueToString:value ForType:Equal];
-    STAssertEqualObjects(value, @"2", @"Divide Failed.");
-
-    // 200/3 = 66.6666...
-    value = @"200";
+    value = @"5";
     value = [test calculateValueToString:value ForType:Divide];
     value = @"3";
     value = [test calculateValueToString:value ForType:Equal];
-
-    NSString *testString = @"66.";
-    for (int i = 0; i < MAX_DIGIT - 3; i++)
-        testString = [testString stringByAppendingString:@"6"];
-    testString = [testString stringByAppendingString:@"7"];
+    STAssertEqualObjects(value, @"1.66666666666667", @"失敗時に表示されるメッセージ");
     
-    STAssertEqualObjects(value, testString, @"Divide Failed.");
+    /*value = [test clearAll];
+    value = @"5";
+    value = [test calculateValueToString:value ForType:Divide];
+    value = @"3";
+    value = [test calculateValueToString:value ForType:Equal];
+    STAssertEqualObjects(value, @"1.66666666666666", @"失敗時に表示されるメッセージ");*/
 }
 
 - (void)testAddDecimalPoint{
     NSString* value = @"0";
-
-    // 2.5
-    value = [test addNumber:@2 ToString:value];
+    value = [test addNumber:@0 ToString:value];
+    STAssertEqualObjects(value, @"0", @"失敗時に表示されるメッセージ");
     value = [test addDecimalPointToString:value];
-    value = [test addNumber:@5 ToString:value];
-    STAssertEqualObjects(value, @"2.5", @"Add Dot Failed.");
-    
-    // 2.5.
+    STAssertEqualObjects(value, @"0.", @"失敗時に表示されるメッセージ");
     value = [test addDecimalPointToString:value];
-    STAssertEqualObjects(value, @"2.5", @"Add Dot Failed.");
-
-    // 二回押す
-    value = @"25";
-    value = [test addDecimalPointToString:value];
-    value = [test addDecimalPointToString:value];
-    STAssertEqualObjects(value, @"25", @"Add Dot Failed.");
+    STAssertEqualObjects(value, @"0.", @"失敗時に表示されるメッセージ");
+    value = [test addNumber:@1 ToString:value];
+    STAssertEqualObjects(value, @"0.1", @"失敗時に表示されるメッセージ");
 }
 
 - (void)testAddPlusMinus{
-    NSString* value = @"0";
-
-    // 0 → -0
+    NSString* value = @"-1";
     value = [test addPlusMinusToString:value];
-    STAssertEqualObjects(value, @"-0", @"Add Plus Minus Failed.");
-    // -0 → 0
+    STAssertEqualObjects(value, @"1", @"失敗時に表示されるメッセージ");
     value = [test addPlusMinusToString:value];
-    STAssertEqualObjects(value, @"0", @"Add Plus Minus Failed.");
-
-    value = @"0";
-    // 1,000 → -1,000
-    value = [test addNumber:@1 ToString:value];
-    value = [test addNumber:@0 ToString:value];
-    value = [test addNumber:@0 ToString:value];
-    value = [test addNumber:@0 ToString:value];
-    value = [test addPlusMinusToString:value];
-    STAssertEqualObjects(value, @"-1,000", @"Add Plus Minus Failed.");
-
-    // -1,000 → 1,000
-    value = [test addPlusMinusToString:value];
-    STAssertEqualObjects(value, @"1,000", @"Add Plus Minus Failed.");
+    STAssertEqualObjects(value, @"-1", @"失敗時に表示されるメッセージ");
 }
 
 @end
