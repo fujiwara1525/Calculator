@@ -15,6 +15,7 @@
     NSNumberFormatter *numberFormatterNatural;
 
     enum State state;
+    BOOL error;
 }
 
 - (id)init{ // 初期化
@@ -73,8 +74,8 @@
     }
 
     // .が末尾にある - .を削除
-    if([valueString hasSuffix:@"."])
-        return [valueString substringToIndex:valueString.length - 1]; // 末尾から一文字削除
+    //if([valueString hasSuffix:@"."])
+    //    return [valueString substringToIndex:valueString.length - 1]; // 末尾から一文字削除
 
     // .が途中にある - 何もしない
     return valueString;
@@ -98,8 +99,14 @@
     if (state != Equal){
         _previousValue = _currentValue; // 現在の値を保存
         _currentValue = @0;
+        
     }
-    return [numberFormatterFormal stringFromNumber:_currentValue]; // 計算後の値を返す
+    if(error){
+        error = 0;
+        return @"エラー";
+    }else{
+        return [numberFormatterFormal stringFromNumber:_currentValue]; // 計算後の値を返す
+    }
 }
 
 - (void)calculateValue{ // 演算の本体
@@ -115,11 +122,16 @@
             _currentValue = [NSNumber numberWithDouble:[_previousValue doubleValue] * [_currentValue doubleValue]];
             break;
         case Divide:
+            if ([_currentValue doubleValue] == 0){
+                error = 1;
+            }
             _currentValue = [NSNumber numberWithDouble:[_previousValue doubleValue] / [_currentValue doubleValue]];
+            
             break;
         default:
             break;
     }
 }
+
 
 @end
